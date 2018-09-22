@@ -44,7 +44,7 @@ namespace BusinessLayer.Tests
             mockSet.As<IQueryable<tblUser>>().Setup(m => m.Provider).Returns(data.Provider);
             mockSet.As<IQueryable<tblUser>>().Setup(m => m.Expression).Returns(data.Expression);
             mockSet.As<IQueryable<tblUser>>().Setup(m => m.ElementType).Returns(data.ElementType);
-            mockSet.As<IQueryable<tblUser>>().Setup(m => m.GetEnumerator()).Returns(() => data.GetEnumerator());
+            
             var mockContext = new Mock<ProjectTaskManagerEntities>();
             mockContext.Setup(m => m.tblUsers).Returns(mockSet.Object);
             var service = new UserService(mockContext.Object);
@@ -101,7 +101,7 @@ namespace BusinessLayer.Tests
             mockSet.As<IQueryable<tblUser>>().Setup(m => m.Provider).Returns(data.Provider);
             mockSet.As<IQueryable<tblUser>>().Setup(m => m.Expression).Returns(data.Expression);
             mockSet.As<IQueryable<tblUser>>().Setup(m => m.ElementType).Returns(data.ElementType);
-            mockSet.As<IQueryable<tblUser>>().Setup(m => m.GetEnumerator()).Returns(() => data.GetEnumerator());
+            
             var mockContext = new Mock<ProjectTaskManagerEntities>();
             mockContext.Setup(m => m.tblUsers).Returns(mockSet.Object);
             var service = new UserService(mockContext.Object);

@@ -9,7 +9,11 @@ namespace BusinessLayer
 {
     public class ProjectService : IProjectService
     {
-        private DataAccessLayer.ProjectTaskManagerEntities dbContext = new ProjectTaskManagerEntities();
+        private DataAccessLayer.ProjectTaskManagerEntities dbContext;
+        public ProjectService(DataAccessLayer.ProjectTaskManagerEntities dbContext)
+        {
+            this.dbContext = dbContext;
+        }
         public int Add(ProjectDO model)
         {
             var data = dbContext.tblProjects.Add(new tblProject()

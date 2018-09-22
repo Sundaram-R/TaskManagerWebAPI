@@ -9,7 +9,11 @@ namespace BusinessLayer
 {
     public class TaskService : ITaskService
     {
-        private DataAccessLayer.ProjectTaskManagerEntities dbContext = new ProjectTaskManagerEntities();
+        private DataAccessLayer.ProjectTaskManagerEntities dbContext ;
+        public TaskService(DataAccessLayer.ProjectTaskManagerEntities dbContext)
+        {
+            this.dbContext = dbContext;
+        }
         public int Add(TaskDO model)
         {
             var data = dbContext.tblTasks.Add(new tblTask()

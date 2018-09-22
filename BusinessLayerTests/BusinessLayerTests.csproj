@@ -73,8 +73,9 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="ProjectServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestDbSet.cs" />
+    <Compile Include="TaskServiceTests.cs" />
     <Compile Include="UserServiceTests.cs" />
   </ItemGroup>
   <ItemGroup>
