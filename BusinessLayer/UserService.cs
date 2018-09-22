@@ -9,7 +9,11 @@ namespace BusinessLayer
 {
     public class UserService : IUserService
     {
-        private DataAccessLayer.ProjectTaskManagerEntities dbContext = new ProjectTaskManagerEntities();
+        private DataAccessLayer.ProjectTaskManagerEntities dbContext ;
+        public UserService(DataAccessLayer.ProjectTaskManagerEntities dbContext)
+        {
+            this.dbContext = dbContext;
+        }
         public int Add(UserDO model)
         {
             var data = dbContext.tblUsers.Add(new tblUser()

@@ -1,10 +1,12 @@
 ﻿using BusinessLayer;
 using SimpleInjector;
 using SimpleInjector.Integration.WebApi;
+using System.Diagnostics.CodeAnalysis;
 using System.Web.Http;
 
 namespace TaskManagerWebAPI
 {
+    [ExcludeFromCodeCoverage]
     public class WebApiApplication : System.Web.HttpApplication
     {
         protected void Application_Start()
