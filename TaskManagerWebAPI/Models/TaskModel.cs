@@ -8,7 +8,7 @@ namespace TaskManagerWebAPI.Models
     public class TaskModel
     {
         public int TaskId { get; set; }
-        public string Task { get; set; }
+        public string TaskName { get; set; }
         public int ProjectID { get; set; }
         public bool IsParentTask { get; set; }
         public int? Priority { get; set; }

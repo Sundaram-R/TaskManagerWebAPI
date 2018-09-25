@@ -10,5 +10,7 @@ namespace BusinessLayer
         public DateTime? EndDate { get; set; }
         public int Priority { get; set; }
         public int ManagerId { get; set; }
+        public int NoOfTasks { get; set; }
+        public int TasksCompleted { get; set; }
     }
 }

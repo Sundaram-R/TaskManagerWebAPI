@@ -27,7 +27,7 @@ namespace TaskManagerWebAPI.Controllers.Tests
             var result = controller.Get(42);
             Assert.IsNotNull(result);
             Assert.AreEqual(12, result.TaskId);
-            Assert.AreEqual("MyTask", result.Task);
+            Assert.AreEqual("MyTask", result.TaskName);
             Assert.AreEqual(true, result.IsParentTask);
         }
 
@@ -54,7 +54,7 @@ namespace TaskManagerWebAPI.Controllers.Tests
             Assert.IsNotNull(result);
             Assert.AreEqual(2, result.Count());
             Assert.AreEqual(12, result.FirstOrDefault().TaskId);
-            Assert.AreEqual("PR1", result.FirstOrDefault().Task);
+            Assert.AreEqual("PR1", result.FirstOrDefault().TaskName);
             Assert.AreEqual(1233, result.FirstOrDefault().ParentTask);
         }
 
@@ -69,7 +69,7 @@ namespace TaskManagerWebAPI.Controllers.Tests
             var result = controller.Post(new Models.TaskModel()
             {
                 TaskId = 12,
-                Task = "PR1",
+                TaskName = "PR1",
                 ParentTask = 1233
             });
             Assert.IsNotNull(result);
@@ -87,7 +87,7 @@ namespace TaskManagerWebAPI.Controllers.Tests
             var result = controller.Put(new Models.TaskModel()
             {
                 TaskId = 12,
-                Task = "PR1",
+                TaskName = "PR1",
                 ParentTask = 1233
             });
             Assert.IsNotNull(result);

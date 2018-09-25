@@ -26,7 +26,8 @@ namespace TaskManagerWebAPI.Controllers
                     Priority = model.Priority,
                     Project = model.Project,
                     Project_Id = model.Project_Id,
-                    StartDate = model.StartDate
+                    StartDate = model.StartDate, NoOfTasks =model.NoOfTasks,
+                    TasksCompleted = model.TasksCompleted   
                 });
             }
             return projects;
@@ -43,7 +44,7 @@ namespace TaskManagerWebAPI.Controllers
                 Priority = result.Priority,
                 Project = result.Project,
                 Project_Id = result.Project_Id,
-                StartDate = result.StartDate
+                StartDate = result.StartDate, NoOfTasks=result.NoOfTasks
             };
             return project;
 
@@ -52,40 +53,68 @@ namespace TaskManagerWebAPI.Controllers
         // POST: api/Project
         public int Post(ProjectModel value)
         {
-
-            var project = projectService.Add(new ProjectDO()
+            if (value == null)
             {
-                EndDate = value.EndDate,
-                ManagerId = value.ManagerId,
-                Priority = value.Priority,
-                Project = value.Project,
-                Project_Id = value.Project_Id,
-                StartDate = value.StartDate
-            });
+                return 0;
+            }
+            try
+            {
+                var project = projectService.Add(new ProjectDO()
+                {
+                    EndDate = value.EndDate,
+                    ManagerId = value.ManagerId,
+                    Priority = value.Priority,
+                    Project = value.Project,
+                    Project_Id = value.Project_Id,
+                    StartDate = value.StartDate
+                });
 
-            return project;
+                return project;
+            }
+            catch 
+            {
+                return 0;
+            }
         }
 
         // PUT: api/Project/5
         public int Put(ProjectModel value)
         {
-            var project = projectService.Edit(new ProjectDO()
+            if (value == null)
             {
-                EndDate = value.EndDate,
-                ManagerId = value.ManagerId,
-                Priority = value.Priority,
-                Project = value.Project,
-                Project_Id = value.Project_Id,
-                StartDate = value.StartDate
-            });
-            return project;
+                return 0;
+            }
+            try
+            {
+                var project = projectService.Edit(new ProjectDO()
+                {
+                    EndDate = value.EndDate,
+                    ManagerId = value.ManagerId,
+                    Priority = value.Priority,
+                    Project = value.Project,
+                    Project_Id = value.Project_Id,
+                    StartDate = value.StartDate
+                });
+                return project;
+            }
+            catch 
+            {
+                return 0;
+            }
         }
 
         // DELETE: api/Project/5
         public int Delete(int id)
         {
-            var project = projectService.Delete(id);
-            return project;
+            try
+            {
+                var project = projectService.Delete(id);
+                return project;
+            }
+            catch 
+            {
+                return 0;
+            }
         }
     }
 }

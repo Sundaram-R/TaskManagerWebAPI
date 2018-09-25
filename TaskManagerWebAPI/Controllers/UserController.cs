@@ -43,32 +43,65 @@ namespace TaskManagerWebAPI.Controllers
         // POST: api/User
         public int Post(User value)
         {
-            
-            var user = userService.Add(new UserDO() {
-                 User_id= value.id, EmployeeId = value.employeeId, FirstName =value.firstName, LastName=value.lastName
-            });
-           
-            return user;
+            if (value == null)
+            {
+                return 0;
+            }
+            try
+            {
+                var user = userService.Add(new UserDO()
+                {
+                    User_id = value.id,
+                    EmployeeId = value.employeeId,
+                    FirstName = value.firstName,
+                    LastName = value.lastName
+                });
+
+                return user;
+            }
+            catch
+            {
+                return 0;
+            }
         }
 
         // PUT: api/User/5
         public int Put(User value)
         {
-            var user = userService.Edit(new UserDO()
+            if (value == null)
             {
-                User_id = value.id,
-                EmployeeId = value.employeeId,
-                FirstName = value.firstName,
-                LastName = value.lastName
-            });
-            return user;
+                return 0;
+            }
+            try
+            {
+                var user = userService.Edit(new UserDO()
+                {
+                    User_id = value.id,
+                    EmployeeId = value.employeeId,
+                    FirstName = value.firstName,
+                    LastName = value.lastName
+                });
+                return user;
+            }
+            catch 
+            {
+                return 0;
+            }
         }
 
         // DELETE: api/User/5
         public int Delete(int id)
         {
-            var user = userService.Delete(id);
-            return user;
+            try
+            {
+                var user = userService.Delete(id);
+                return user;
+            }
+            catch 
+            {
+                return 0;
+                
+            }
         }
     }
 }

@@ -32,7 +32,7 @@ namespace TaskManagerWebAPI.Controllers
                     ProjectID = model.ProjectID,
                     StartDate = model.StartDate,
                     Status = model.Status,
-                    Task = model.Task,
+                    TaskName = model.Task,
                     TaskId = model.TaskId,
                     TaskOwner = model.TaskOwner
                 });
@@ -53,7 +53,7 @@ namespace TaskManagerWebAPI.Controllers
                 ProjectID = result.ProjectID,
                 StartDate = result.StartDate,
                 Status = result.Status,
-                Task = result.Task,
+                TaskName = result.Task,
                 TaskId = result.TaskId,
                 TaskOwner = result.TaskOwner
             };
@@ -63,48 +63,77 @@ namespace TaskManagerWebAPI.Controllers
         // POST: api/Task
         public int Post(TaskModel value)
         {
-
-            var task = taskService.Add(new TaskDO()
+            if (value == null)
             {
-                EndDate = value.EndDate,
-                IsParentTask = value.IsParentTask,
-                ParentTask = value.ParentTask,
-                Priority = value.Priority,
-                ProjectID = value.ProjectID,
-                StartDate = value.StartDate,
-                Status = value.Status,
-                Task = value.Task,
-                TaskId = value.TaskId,
-                TaskOwner = value.TaskOwner
-            });
+                return 0;
+            }
+            try
+            {
+                var task = taskService.Add(new TaskDO()
+                {
+                    EndDate = value.EndDate,
+                    IsParentTask = value.IsParentTask,
+                    ParentTask = value.ParentTask,
+                    Priority = value.Priority,
+                    ProjectID = value.ProjectID,
+                    StartDate = value.StartDate,
+                    Status = value.Status,
+                    Task = value.TaskName,
+                    TaskId = value.TaskId,
+                    TaskOwner = value.TaskOwner
+                });
 
-            return task;
+                return task;
+            }
+            catch 
+            {
+                return 0;
+            }
         }
 
         // PUT: api/Task/5
         public int Put(TaskModel value)
         {
-            var task = taskService.Edit(new TaskDO()
-            {
-                EndDate = value.EndDate,
-                IsParentTask = value.IsParentTask,
-                ParentTask = value.ParentTask,
-                Priority = value.Priority,
-                ProjectID = value.ProjectID,
-                StartDate = value.StartDate,
-                Status = value.Status,
-                Task = value.Task,
-                TaskId = value.TaskId,
-                TaskOwner = value.TaskOwner
-            });
-            return task;
+            if (value == null)
+            {   return 0;
+            }
+            try
+                {
+                    var task = taskService.Edit(new TaskDO()
+                    {
+                        EndDate = value.EndDate,
+                        IsParentTask = value.IsParentTask,
+                        ParentTask = value.ParentTask,
+                        Priority = value.Priority,
+                        ProjectID = value.ProjectID,
+                        StartDate = value.StartDate,
+                        Status = value.Status,
+                        Task = value.TaskName,
+                        TaskId = value.TaskId,
+                        TaskOwner = value.TaskOwner
+                    });
+                    return task;
+                }
+                catch
+                {
+                    return 0;
+                }
+            
+            
+            
         }
 
         // DELETE: api/Task/5
         public int Delete(int id)
         {
-            var task = taskService.Delete(id);
-            return task;
+            try
+            {
+                var task = taskService.Delete(id);
+                return task;
+            }
+            catch             {
+                return 0;
+            }
         }
     }
 }

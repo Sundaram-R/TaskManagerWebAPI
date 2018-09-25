@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DataAccessLayer;
+using System.Data.Entity;
 
 namespace BusinessLayer
 {
@@ -40,7 +41,17 @@ namespace BusinessLayer
                 FirstName = model.FirstName,
                 LastName = model.LastName
             };
-            dbContext.Entry(editData).State = System.Data.Entity.EntityState.Modified;
+
+            var local = dbContext.Set<tblUser>()
+                         .Local
+                         .FirstOrDefault(f => f.User_id == model.User_id);
+            if (local != null)
+            {
+                dbContext.Entry(local).State = EntityState.Detached;
+            }
+            dbContext.Entry(editData).State = EntityState.Modified;
+
+            //dbContext.Entry(editData).State = System.Data.Entity.EntityState.Modified;
             return dbContext.SaveChanges();
         }
 

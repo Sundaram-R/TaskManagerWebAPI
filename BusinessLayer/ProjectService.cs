@@ -1,6 +1,7 @@
 ﻿using DataAccessLayer;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,16 +17,25 @@ namespace BusinessLayer
         }
         public int Add(ProjectDO model)
         {
-            var data = dbContext.tblProjects.Add(new tblProject()
+            try
             {
-                EndDate = model.EndDate,
-                ManagerId = model.ManagerId,
-                Priority = model.Priority,
-                Project = model.Project,
-                Project_Id = model.Project_Id,
-                StartDate = model.StartDate
-            });
-            return dbContext.SaveChanges();
+                var data = dbContext.tblProjects.Add(new tblProject()
+                {
+                    EndDate = model.EndDate,
+                    ManagerId = model.ManagerId,
+                    Priority = model.Priority,
+                    Project = model.Project,
+                    Project_Id = model.Project_Id,
+                    StartDate = model.StartDate
+                });
+                return dbContext.SaveChanges();
+            }
+            catch (Exception)
+            {
+
+                return 0;
+            }
+            
         }
 
         public int Delete(int id)
@@ -45,7 +55,15 @@ namespace BusinessLayer
                 Project_Id = model.Project_Id,
                 StartDate = model.StartDate
             };
-            dbContext.Entry(editData).State = System.Data.Entity.EntityState.Modified;
+            var local = dbContext.Set<tblProject>()
+                        .Local
+                        .FirstOrDefault(f => f.Project_Id == model.Project_Id);
+            if (local != null)
+            {
+                dbContext.Entry(local).State = EntityState.Detached;
+            }
+            dbContext.Entry(editData).State = EntityState.Modified;
+            //dbContext.Entry(editData).State = System.Data.Entity.EntityState.Modified;
             return dbContext.SaveChanges();
         }
 
@@ -55,7 +73,7 @@ namespace BusinessLayer
             var data = dbContext.tblProjects;
             foreach (var model in data)
             {
-                projects.Add(new ProjectDO()
+                var projectData =new ProjectDO()
                 {
                     EndDate = model.EndDate,
                     ManagerId = model.ManagerId,
@@ -63,7 +81,12 @@ namespace BusinessLayer
                     Project = model.Project,
                     Project_Id = model.Project_Id,
                     StartDate = model.StartDate
-                });
+                    
+                };
+                projectData.NoOfTasks = dbContext.tblTasks.Count(s => s.ProjectID == projectData.Project_Id);
+                projectData.TasksCompleted = dbContext.tblTasks.Count(s => s.ProjectID == projectData.Project_Id
+                && s.Status=="Completed" );
+                projects.Add(projectData);
             }
             return projects;
         }
