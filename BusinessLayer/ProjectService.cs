@@ -46,24 +46,13 @@ namespace BusinessLayer
 
         public int Edit(ProjectDO model)
         {
-            var editData= new tblProject()
-            {
-                EndDate = model.EndDate,
-                ManagerId = model.ManagerId,
-                Priority = model.Priority,
-                Project = model.Project,
-                Project_Id = model.Project_Id,
-                StartDate = model.StartDate
-            };
-            var local = dbContext.Set<tblProject>()
-                        .Local
-                        .FirstOrDefault(f => f.Project_Id == model.Project_Id);
-            if (local != null)
-            {
-                dbContext.Entry(local).State = EntityState.Detached;
-            }
-            dbContext.Entry(editData).State = EntityState.Modified;
-            //dbContext.Entry(editData).State = System.Data.Entity.EntityState.Modified;
+            var editData = dbContext.tblProjects.First(x => x.Project_Id == model.Project_Id);
+            editData.EndDate = model.EndDate;
+            editData.ManagerId = model.ManagerId;
+            editData.Priority = model.Priority;
+            editData.Project = model.Project;
+            editData.Project_Id = model.Project_Id;
+            editData.StartDate = model.StartDate;        
             return dbContext.SaveChanges();
         }
 

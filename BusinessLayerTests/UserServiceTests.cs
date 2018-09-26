@@ -1,14 +1,9 @@
-﻿using NUnit.Framework;
-using BusinessLayer;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Collections.ObjectModel;
-using System.Data.Entity;
+﻿using DataAccessLayer;
 using Moq;
-using DataAccessLayer;
+using NUnit.Framework;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
 
 namespace BusinessLayer.Tests
 {
@@ -55,17 +50,23 @@ namespace BusinessLayer.Tests
         [Test()]
         public void EditTest()
         {
+            ProjectTaskManagerEntities dbContext = new ProjectTaskManagerEntities();
+            var data = new List<tblUser>() {
+                new tblUser() { User_id=12 },
+            new tblUser() { User_id=2 },
+            new tblUser() { User_id=3 }
+            }.AsQueryable();
             var mockSet = new Mock<DbSet<tblUser>>();
-
-            var mockContext = new Mock<ProjectTaskManagerEntities>();
+            mockSet.As<IQueryable<tblUser>>().Setup(m => m.Provider).Returns(data.Provider);
+            mockSet.As<IQueryable<tblUser>>().Setup(m => m.Expression).Returns(data.Expression);
+            mockSet.As<IQueryable<tblUser>>().Setup(m => m.ElementType).Returns(data.ElementType);
+        
+            dbContext.tblUsers = mockSet.Object;
             
-            mockContext.Setup(m => m.tblUsers).Returns(mockSet.Object);
             
-            var service = new UserService(mockContext.Object);
-            service.Edit(new UserDO() { User_id = 12 });
-
-           // mockSet.Verify(m => m.Add(It.IsAny<tblUser>()), Times.Once());
-            mockContext.Verify(m => m.SaveChanges(), Times.Once());
+            var service = new UserService(dbContext);
+          var returnValue =  service.Edit(new UserDO() { User_id = 12 });
+            Assert.NotNull(returnValue);
         }
 
         [Test()]

@@ -1,4 +1,5 @@
-﻿using BusinessLayer;
+﻿using TaskManagerWebAPI.Controllers;
+using BusinessLayer;
 using Moq;
 using NUnit.Framework;
 using System.Collections.Generic;
@@ -109,6 +110,80 @@ namespace TaskManagerWebAPI.Controllers.Tests
             var result = controller.Delete(1);
             Assert.IsNotNull(result);
             Assert.AreEqual(1, result);
+        }
+        [Test()]
+        public void PostExceptionTest()
+        {
+            var mockRepos = new Mock<IUserService>();
+
+            mockRepos.Setup(x => x.Add(It.IsAny<UserDO>())).Throws(new System.Exception("Error"));
+
+            var controller = new UserController(mockRepos.Object);
+            var result = controller.Post(new Models.User()
+            {
+                id = 12,
+                firstName = "PR1",
+                employeeId = 1233
+            });
+            Assert.IsNotNull(result);
+            Assert.AreEqual(0, result);
+
+        }
+        [Test()]
+        public void PostNullTest()
+        {
+            var mockRepos = new Mock<IUserService>();
+
+            mockRepos.Setup(x => x.Add(It.IsAny<UserDO>())).Returns(1);
+
+            var controller = new UserController(mockRepos.Object);
+            var result = controller.Post(null);
+            Assert.IsNotNull(result);
+            Assert.AreEqual(0, result);
+        }
+        [Test()]
+        public void PutNullTest()
+        {
+            var mockRepos = new Mock<IUserService>();
+
+            mockRepos.Setup(x => x.Edit(It.IsAny<UserDO>())).Returns(1);
+
+            var controller = new UserController(mockRepos.Object);
+            var result = controller.Put(null);
+            Assert.IsNotNull(result);
+            Assert.AreEqual(0, result);
+        }
+        [Test()]
+        public void PutExceptionTest()
+        {
+            var mockRepos = new Mock<IUserService>();
+
+            mockRepos.Setup(x => x.Edit(It.IsAny<UserDO>())).Throws(new System.Exception("Error"));
+
+            var controller = new UserController(mockRepos.Object);
+            var result = controller.Put(new Models.User()
+            {
+                id = 12,
+                firstName = "PR1",
+                employeeId = 1233
+            });
+            Assert.IsNotNull(result);
+            Assert.AreEqual(0, result);
+
+        }
+
+        [Test()]
+        public void DeleteThrowExceptionTest()
+        {
+            var mockRepos = new Mock<IUserService>();
+
+            mockRepos.Setup(x => x.Delete(It.IsAny<int>())).Throws(new System.Exception("Error"));
+
+            var controller = new UserController(mockRepos.Object);
+            var result = controller.Delete(12);
+            Assert.IsNotNull(result);
+            Assert.AreEqual(0, result);
+
         }
     }
 }

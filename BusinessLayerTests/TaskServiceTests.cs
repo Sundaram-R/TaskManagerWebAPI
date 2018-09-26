@@ -14,7 +14,11 @@ namespace BusinessLayer.Tests
     [TestFixture()]
     public class TaskServiceTests
     {
-      
+        public ProjectTaskManagerEntities dbContext;
+        public TaskServiceTests()
+        {
+            dbContext = new ProjectTaskManagerEntities();
+        }
         [Test()]
         public void AddTest()
         {
@@ -53,16 +57,20 @@ namespace BusinessLayer.Tests
         [Test()]
         public void EditTest()
         {
+            var data = new List<tblTask>() {
+                new tblTask() { TaskId=12 },
+            new tblTask() { TaskId=2 },
+            new tblTask() { TaskId=3 }
+            }.AsQueryable();
             var mockSet = new Mock<DbSet<tblTask>>();
+            mockSet.As<IQueryable<tblTask>>().Setup(m => m.Provider).Returns(data.Provider);
+            mockSet.As<IQueryable<tblTask>>().Setup(m => m.Expression).Returns(data.Expression);
+            mockSet.As<IQueryable<tblTask>>().Setup(m => m.ElementType).Returns(data.ElementType);
 
-            var mockContext = new Mock<ProjectTaskManagerEntities>();
-
-            mockContext.Setup(m => m.tblTasks).Returns(mockSet.Object);
-
-            var service = new TaskService(mockContext.Object);
-            service.Edit(new TaskDO() { TaskId = 12 });
-
-            mockContext.Verify(m => m.SaveChanges(), Times.Once());
+            dbContext.tblTasks = mockSet.Object;
+            var service = new TaskService(dbContext);
+            var returnValue = service.Edit(new TaskDO() { TaskId = 12 });
+            Assert.IsNotNull(returnValue);
 
         }
 

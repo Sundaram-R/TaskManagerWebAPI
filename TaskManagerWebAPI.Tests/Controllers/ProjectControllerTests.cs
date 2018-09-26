@@ -1,4 +1,5 @@
-﻿using BusinessLayer;
+﻿using TaskManagerWebAPI.Controllers;
+using BusinessLayer;
 using Moq;
 using NUnit.Framework;
 using System.Collections.Generic;
@@ -16,7 +17,8 @@ namespace TaskManagerWebAPI.Controllers.Tests
             var mockRepos = new Mock<IProjectService>();
             mockRepos.Setup(x => x.GetById(42)).Returns(new ProjectDO()
             {
-              Project_Id=12, Project= "Project 1"
+                Project_Id = 12,
+                Project = "Project 1"
             });
             var controller = new ProjectController(mockRepos.Object);
             var result = controller.Get(42);
@@ -32,7 +34,9 @@ namespace TaskManagerWebAPI.Controllers.Tests
             var mockData = new List<ProjectDO>();
             mockData.Add(new ProjectDO()
             {
-               Project_Id=12, Project="PR1", ManagerId=1233
+                Project_Id = 12,
+                Project = "PR1",
+                ManagerId = 1233
             });
             mockData.Add(new ProjectDO()
             {
@@ -48,7 +52,7 @@ namespace TaskManagerWebAPI.Controllers.Tests
             Assert.AreEqual(12, result.FirstOrDefault().Project_Id);
             Assert.AreEqual("PR1", result.FirstOrDefault().Project);
             Assert.AreEqual(1233, result.FirstOrDefault().ManagerId);
-            
+
         }
 
         [Test()]
@@ -98,6 +102,82 @@ namespace TaskManagerWebAPI.Controllers.Tests
             var result = controller.Delete(12);
             Assert.IsNotNull(result);
             Assert.AreEqual(1, result);
+        }
+
+        [Test()]
+        public void PostNullTest()
+        {
+            var mockRepos = new Mock<IProjectService>();
+
+            mockRepos.Setup(x => x.Add(It.IsAny<ProjectDO>())).Returns(1);
+
+            var controller = new ProjectController(mockRepos.Object);
+            var result = controller.Post(null);
+            Assert.IsNotNull(result);
+            Assert.AreEqual(0, result);
+        }
+
+        [Test()]
+        public void PutNullTest()
+        {
+            var mockRepos = new Mock<IProjectService>();
+
+            mockRepos.Setup(x => x.Edit(It.IsAny<ProjectDO>())).Returns(1);
+
+            var controller = new ProjectController(mockRepos.Object);
+            var result = controller.Put(null);
+            Assert.IsNotNull(result);
+            Assert.AreEqual(0, result);
+
+        }
+        [Test()]
+        public void PutExceptionTest()
+        {
+            var mockRepos = new Mock<IProjectService>();
+
+            mockRepos.Setup(x => x.Edit(It.IsAny<ProjectDO>())).Throws(new System.Exception("Error"));
+
+            var controller = new ProjectController(mockRepos.Object);
+            var result = controller.Put(new Models.ProjectModel()
+            {
+                Project_Id = 12,
+                Project = "PR1",
+                ManagerId = 1233
+            });
+            Assert.IsNotNull(result);
+            Assert.AreEqual(0, result);
+
+        }
+        [Test()]
+        public void PostExceptionTest()
+        {
+            var mockRepos = new Mock<IProjectService>();
+
+            mockRepos.Setup(x => x.Add(It.IsAny<ProjectDO>())).Throws(new System.Exception("Error"));
+
+            var controller = new ProjectController(mockRepos.Object);
+            var result = controller.Post(new Models.ProjectModel()
+            {
+                Project_Id = 12,
+                Project = "PR1",
+                ManagerId = 1233
+            });
+            Assert.IsNotNull(result);
+            Assert.AreEqual(0, result);
+
+        }
+        [Test()]
+        public void DeleteThrowExceptionTest()
+        {
+            var mockRepos = new Mock<IProjectService>();
+
+            mockRepos.Setup(x => x.Delete(It.IsAny<int>())).Throws(new System.Exception("Error"));
+
+            var controller = new ProjectController(mockRepos.Object);
+            var result = controller.Delete(12);
+            Assert.IsNotNull(result);
+            Assert.AreEqual(0, result);
+
         }
     }
 }

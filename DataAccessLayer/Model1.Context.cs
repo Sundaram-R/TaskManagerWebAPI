@@ -20,10 +20,7 @@ namespace DataAccessLayer
         {
         }
     
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        {
-            throw new UnintentionalCodeFirstException();
-        }
+       
     
         public virtual DbSet<tblProject> tblProjects { get; set; }
         public virtual DbSet<tblTask> tblTasks { get; set; }

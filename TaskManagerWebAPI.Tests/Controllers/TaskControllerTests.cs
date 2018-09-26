@@ -106,5 +106,79 @@ namespace TaskManagerWebAPI.Controllers.Tests
             Assert.IsNotNull(result);
             Assert.AreEqual(1, result);
         }
+        [Test()]
+        public void PostNullTest()
+        {
+            var mockRepos = new Mock<ITaskService>();
+
+            mockRepos.Setup(x => x.Add(It.IsAny<TaskDO>())).Returns(1);
+
+            var controller = new TaskController(mockRepos.Object);
+            var result = controller.Post(null);
+            Assert.IsNotNull(result);
+            Assert.AreEqual(0, result);
+        }
+        [Test()]
+        public void PostExceptionTest()
+        {
+            var mockRepos = new Mock<ITaskService>();
+
+            mockRepos.Setup(x => x.Add(It.IsAny<TaskDO>())).Throws(new System.Exception("Error"));
+
+            var controller = new TaskController(mockRepos.Object);
+            var result = controller.Post(new Models.TaskModel()
+            {
+                TaskId = 12,
+                TaskName = "Task1",
+                ProjectID = 1233
+            });
+            Assert.IsNotNull(result);
+            Assert.AreEqual(0, result);
+
+        }
+        [Test()]
+        public void PutNullTest()
+        {
+            var mockRepos = new Mock<ITaskService>();
+
+            mockRepos.Setup(x => x.Edit(It.IsAny<TaskDO>())).Returns(1);
+
+            var controller = new TaskController(mockRepos.Object);
+            var result = controller.Put(null);
+            Assert.IsNotNull(result);
+            Assert.AreEqual(0, result);
+        }
+        [Test()]
+        public void PutExceptionTest()
+        {
+            var mockRepos = new Mock<ITaskService>();
+
+            mockRepos.Setup(x => x.Edit(It.IsAny<TaskDO>())).Throws(new System.Exception("Error"));
+
+            var controller = new TaskController(mockRepos.Object);
+            var result = controller.Put(new Models.TaskModel()
+            {
+                TaskId = 12,
+                TaskName = "Task1",
+                ProjectID = 1233
+            });
+            Assert.IsNotNull(result);
+            Assert.AreEqual(0, result);
+
+        }
+
+        [Test()]
+        public void DeleteThrowExceptionTest()
+        {
+            var mockRepos = new Mock<ITaskService>();
+
+            mockRepos.Setup(x => x.Delete(It.IsAny<int>())).Throws(new System.Exception("Error"));
+
+            var controller = new TaskController(mockRepos.Object);
+            var result = controller.Delete(12);
+            Assert.IsNotNull(result);
+            Assert.AreEqual(0, result);
+
+        }
     }
 }

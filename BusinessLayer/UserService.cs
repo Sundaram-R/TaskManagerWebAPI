@@ -34,24 +34,12 @@ namespace BusinessLayer
 
         public int Edit(UserDO model)
         {
-            var editData = new tblUser()
-            {
-                User_id = model.User_id,
-                EmployeeId = model.EmployeeId,
-                FirstName = model.FirstName,
-                LastName = model.LastName
-            };
+            var editData = dbContext.tblUsers.First(x => x.User_id == model.User_id);
 
-            var local = dbContext.Set<tblUser>()
-                         .Local
-                         .FirstOrDefault(f => f.User_id == model.User_id);
-            if (local != null)
-            {
-                dbContext.Entry(local).State = EntityState.Detached;
-            }
-            dbContext.Entry(editData).State = EntityState.Modified;
-
-            //dbContext.Entry(editData).State = System.Data.Entity.EntityState.Modified;
+            editData.User_id = model.User_id;
+            editData.EmployeeId = model.EmployeeId;
+            editData.FirstName = model.FirstName;
+            editData.LastName = model.LastName;
             return dbContext.SaveChanges();
         }
 

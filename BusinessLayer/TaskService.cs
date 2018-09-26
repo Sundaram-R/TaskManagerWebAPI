@@ -41,29 +41,17 @@ namespace BusinessLayer
 
         public int Edit(TaskDO model)
         {
-            var editData = new tblTask()
-            {
-                EndDate = model.EndDate,
-                IsParentTask = model.IsParentTask,
-                ParentTask = model.ParentTask,
-                Priority = model.Priority,
-                ProjectID = model.ProjectID,
-                StartDate = model.StartDate,
-                Status = model.Status,
-                Task = model.Task,
-                TaskId = model.TaskId,
-                TaskOwner = model.TaskOwner
-            };
-            var local = dbContext.Set<tblTask>()
-                        .Local
-                        .FirstOrDefault(f => f.TaskId == model.TaskId);
-            if (local != null)
-            {
-                dbContext.Entry(local).State = EntityState.Detached;
-            }
-            dbContext.Entry(editData).State = EntityState.Modified;
-
-            dbContext.Entry(editData).State = System.Data.Entity.EntityState.Modified;
+            var editData = dbContext.tblTasks.First(x => x.TaskId == model.TaskId);
+            editData.EndDate = model.EndDate;
+            editData.IsParentTask = model.IsParentTask;
+            editData.ParentTask = model.ParentTask;
+            editData.Priority = model.Priority;
+            editData.ProjectID = model.ProjectID;
+            editData.StartDate = model.StartDate;
+            editData.Status = model.Status;
+            editData.Task = model.Task;
+            editData.TaskId = model.TaskId;
+            editData.TaskOwner = model.TaskOwner;
             return dbContext.SaveChanges();
         }
 
