@@ -1,6 +1,7 @@
 ﻿using DataAccessLayer;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -53,6 +54,15 @@ namespace BusinessLayer
                 TaskId = model.TaskId,
                 TaskOwner = model.TaskOwner
             };
+            var local = dbContext.Set<tblTask>()
+                        .Local
+                        .FirstOrDefault(f => f.TaskId == model.TaskId);
+            if (local != null)
+            {
+                dbContext.Entry(local).State = EntityState.Detached;
+            }
+            dbContext.Entry(editData).State = EntityState.Modified;
+
             dbContext.Entry(editData).State = System.Data.Entity.EntityState.Modified;
             return dbContext.SaveChanges();
         }
