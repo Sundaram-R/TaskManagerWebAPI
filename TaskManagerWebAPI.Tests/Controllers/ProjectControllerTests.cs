@@ -26,7 +26,20 @@ namespace TaskManagerWebAPI.Controllers.Tests
             Assert.AreEqual(12, result.Project_Id);
             Assert.AreEqual("Project 1", result.Project);
         }
-
+        [Test()]
+        public void GetInvalidDataTest()
+        {
+            var mockRepos = new Mock<IProjectService>();
+            mockRepos.Setup(x => x.GetById(42)).Returns(new ProjectDO()
+            {
+                Project_Id = 42,
+                Project = "Project 1"
+            });
+            var controller = new ProjectController(mockRepos.Object);
+            var result = controller.Get(4);
+            Assert.IsNull(result);
+            
+        }
         [Test()]
         public void GetTest1()
         {

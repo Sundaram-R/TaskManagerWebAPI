@@ -29,7 +29,21 @@ namespace TaskManagerWebAPI.Controllers.Tests
             Assert.AreEqual("Jack", result.firstName);
             Assert.AreEqual("Jill", result.lastName);
         }
-
+        [Test()]
+        public void GetInvalidIdReturnNullTest()
+        {
+            var mockRepos = new Mock<IUserService>();
+            mockRepos.Setup(x => x.GetById(42)).Returns(new UserDO()
+            {
+                User_id = 42,
+                EmployeeId = 122,
+                FirstName = "Jack",
+                LastName = "Jill"
+            });
+            UserController controller = new UserController(mockRepos.Object);
+            var result = controller.Get(44);
+            Assert.IsNull(result);            
+        }
         [Test()]
         public void PutTest()
         {

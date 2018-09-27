@@ -36,17 +36,25 @@ namespace TaskManagerWebAPI.Controllers
         // GET: api/Project/5
         public ProjectModel Get(int id)
         {
-            var result = projectService.GetById(id);
-            var project = new ProjectModel()
+            try
             {
-                EndDate = result.EndDate,
-                ManagerId = result.ManagerId,
-                Priority = result.Priority,
-                Project = result.Project,
-                Project_Id = result.Project_Id,
-                StartDate = result.StartDate, NoOfTasks=result.NoOfTasks
-            };
-            return project;
+                var result = projectService.GetById(id);
+                var project = new ProjectModel()
+                {
+                    EndDate = result.EndDate,
+                    ManagerId = result.ManagerId,
+                    Priority = result.Priority,
+                    Project = result.Project,
+                    Project_Id = result.Project_Id,
+                    StartDate = result.StartDate,
+                    NoOfTasks = result.NoOfTasks
+                };
+                return project;
+            }
+            catch
+            {
+                return null;
+            }
 
         }
 

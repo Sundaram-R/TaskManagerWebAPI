@@ -29,15 +29,23 @@ namespace TaskManagerWebAPI.Controllers
         // GET: api/User/5
         public User Get(int id)
         {
-            
-            var result = userService.GetById(id);
-            var user = new User() {
-                id = result.User_id,
-                employeeId = result.EmployeeId,
-                firstName = result.FirstName,
-                lastName = result.LastName
-            };
-            return user;
+
+            try
+            {
+                var result = userService.GetById(id);
+                var user = new User()
+                {
+                    id = result.User_id,
+                    employeeId = result.EmployeeId,
+                    firstName = result.FirstName,
+                    lastName = result.LastName
+                };
+                return user;
+            }
+            catch 
+            {
+                return null;
+            }
         }
 
         // POST: api/User
